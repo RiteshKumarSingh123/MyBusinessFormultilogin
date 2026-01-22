@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.business.busi.service.CustomerService;
 
 import io.jsonwebtoken.JwtException;
@@ -23,8 +22,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class AppFilter extends OncePerRequestFilter {
-	
-	private static final Logger logger = LoggerFactory.getLogger(AppFilter.class); 
 	
 	 @Autowired
 	 private JwtService jwtService;
@@ -63,12 +60,8 @@ public class AppFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
            }
         }
-		 }catch (JwtException  e) {
-			 logger.error("JwtException doFilterInternal failed: {}",  e);
-	         throw new RuntimeException("JwtException error doFilterInternal ", e);
-	     }catch (Exception  e) {
-			 logger.error("Exception doFilterInternal failed: {}",  e);
-	         throw new RuntimeException("Exception error doFilterInternal ", e);
+		 }catch (JwtException |NoSuchAlgorithmException e) {
+ 
 	     }
 		
 		filterChain.doFilter(request, response);

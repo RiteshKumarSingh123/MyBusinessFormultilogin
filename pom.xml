@@ -113,7 +113,7 @@
 	</dependencies>
 
 	<build>
-	<finalName>MyBusinessPro</finalName>
+	<finalName>MyBusinessProFormultilogin</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

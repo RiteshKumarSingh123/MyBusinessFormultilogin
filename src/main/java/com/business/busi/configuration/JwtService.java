@@ -10,6 +10,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.business.busi.exception.MyBusinessProException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -54,7 +56,7 @@ public class JwtService {
 	        token = createToken(claims, username);
 	    	}catch(Exception e) {
 	    		logger.error("Exception generateToken failed: {}", username, e);
-	            throw new RuntimeException("Exception error generateToken ", e);
+	            throw new MyBusinessProException("Exception error generateToken ", e.getMessage());
 	    	}
 			return token;
 	    }
@@ -74,11 +76,11 @@ public class JwtService {
 	        String hashedToken = hashToken(token);
 		    redisTemplate.opsForValue().set(hashedToken, username, expiration, TimeUnit.MILLISECONDS);	
 	    	}catch(NoSuchAlgorithmException e) {
-	    		  logger.error("NoSuchAlgorithmException createToken failed: {}", username, e);
-	              throw new RuntimeException("NoSuchAlgorithmException error createToken ", e);
+	    		logger.error("NoSuchAlgorithmException createToken failed: {}", username, e);
+	            throw new MyBusinessProException("NoSuchAlgorithmException error createToken ", e.getMessage());
 	    	}catch(Exception e) {
 	    		logger.error("Exception createToken failed: {}", username, e);
-	            throw new RuntimeException("Exception error createToken ", e);
+	            throw new MyBusinessProException("Exception error createToken ", e.getMessage());
 	    	}
 	        return token;
 	    }
@@ -120,7 +122,7 @@ public class JwtService {
 	    }
 	  
 	    
-	    public boolean validateToken(String token, UserDetails userDetails){
+	    public boolean validateToken(String token, UserDetails userDetails) throws NoSuchAlgorithmException{
 	        try {
 	            String username = extractUsername(token);
 
@@ -137,13 +139,13 @@ public class JwtService {
 
 	        } catch (JwtException  e) {
 	          logger.error("JwtException validateToken failed: {}", e.getMessage(), e);
-	          throw new RuntimeException("JwtException error validateToken ", e);
+	          throw new MyBusinessProException("JwtException error validateToken ", e.getMessage());
 	        } catch (NoSuchAlgorithmException e) {
 	          logger.error("NoSuchAlgorithmException validateToken failed: {}", e.getMessage(), e);
-		      throw new RuntimeException("NoSuchAlgorithmException error validateToken ", e);
+		      throw new MyBusinessProException("NoSuchAlgorithmException error validateToken ", e.getMessage());
 			}catch (Exception  e) {
 		      logger.error("Exception validateToken failed: {}", e.getMessage(), e);
-		      throw new RuntimeException("Exception error validateToken ", e);
+		      throw new MyBusinessProException("Exception error validateToken ", e.getMessage());
 		    }
 	    }
 	    
@@ -160,10 +162,10 @@ public class JwtService {
 	        isValid =  redisTemplate.hasKey(hashedToken);
 	    	}catch(NoSuchAlgorithmException e) {
 	    		logger.error("NoSuchAlgorithmException isTokenValid failed: {}", e.getMessage(), e);
-			    throw new RuntimeException("NoSuchAlgorithmException error isTokenValid ", e);	
+			    throw new MyBusinessProException("NoSuchAlgorithmException error isTokenValid ", e.getMessage());	
 	    	}catch(Exception e) {
 	    		logger.error("Exception isTokenValid failed: {}", e.getMessage(), e);
-			    throw new RuntimeException("Exception error isTokenValid ", e);	
+			    throw new MyBusinessProException("Exception error isTokenValid ", e.getMessage());	
 	    	}
 			return isValid;
 	    }
@@ -174,10 +176,10 @@ public class JwtService {
 	        redisTemplate.delete(hashedToken);
 	    	}catch(NoSuchAlgorithmException e) {
 	    		logger.error("NoSuchAlgorithmException deleteToken failed: {}", e.getMessage(), e);
-			    throw new RuntimeException("NoSuchAlgorithmException error deleteToken ", e);
+			    throw new MyBusinessProException("NoSuchAlgorithmException error deleteToken ", e.getMessage());
 	    	}catch(Exception e) {
 	    		logger.error("Exception deleteToken failed: {}", e.getMessage(), e);
-			    throw new RuntimeException("Exception error deleteToken ", e);
+			    throw new MyBusinessProException("Exception error deleteToken ", e.getMessage());
 	    	}
 	    }
 
