@@ -39,6 +39,9 @@ public class JwtService {
 
     @Value("${jwt.expiration}")
     private long expiration;
+    
+    @Value("${jwt.refresh}")
+    private long refreshExpiration;
 	
 //	 private final String SECRET_KEY = "0123456789012345678901234567890101234567890123456789012345678901";
 //    
@@ -49,11 +52,21 @@ public class JwtService {
     private StringRedisTemplate redisTemplate;
     
     
-	    public String generateToken(String username){
+       public String generateAccessToken(String username) {
+            return generateToken(username, expiration);
+        }
+
+    
+       public String generateRefreshToken(String username) {
+            return generateToken(username, refreshExpiration);
+        }
+    
+    
+	    public String generateToken(String username,long expirationTime){
 	    	String token = null;
 	    	try {
 	        Map<String, Object> claims = new HashMap<>();
-	        token = createToken(claims, username);
+	        token = createToken(claims, username, expirationTime);
 	    	}catch(Exception e) {
 	    		logger.error("Exception generateToken failed: {}", username, e);
 	            throw new MyBusinessProException("Exception error generateToken ", e.getMessage());
@@ -62,19 +75,19 @@ public class JwtService {
 	    }
     
 
-	    private  String createToken(Map<String, Object> claims, String username){
+	    private String createToken(Map<String, Object> claims, String username, long expirationTime){
 	    	String token = null;
 	    	try {
 	                token = Jwts.builder()
 	                .setClaims(claims)
 	                .setSubject(username)
 	                .setIssuedAt(new Date())
-	                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+	                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
 	                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
 	                .compact();
 	        
 	        String hashedToken = hashToken(token);
-		    redisTemplate.opsForValue().set(hashedToken, username, expiration, TimeUnit.MILLISECONDS);	
+		    redisTemplate.opsForValue().set(hashedToken, username, expirationTime, TimeUnit.MILLISECONDS);	
 	    	}catch(NoSuchAlgorithmException e) {
 	    		logger.error("NoSuchAlgorithmException createToken failed: {}", username, e);
 	            throw new MyBusinessProException("NoSuchAlgorithmException error createToken ", e.getMessage());
@@ -84,6 +97,117 @@ public class JwtService {
 	    	}
 	        return token;
 	    }
+	    
+	    public Map<String, String> refreshToken(String oldToken) {
+	        Map<String, String> refreshData = new HashMap<String, String>();
+	        try {
+	            
+	            if (!isTokenValid(oldToken)) {
+	                throw new MyBusinessProException("Invalid or expired token.");
+	            }
+
+	           
+	            String username = extractUsername(oldToken);
+
+	            
+	            String hashedToken = hashToken(oldToken);
+
+	           
+	            if (redisTemplate.opsForValue().get(hashedToken) == null) {
+	                throw new MyBusinessProException("Token not found in Redis.");
+	            }
+
+	          
+	            String newToken = generateAccessToken(username);
+
+	            
+	            String hashedNewToken = hashToken(newToken);
+	            redisTemplate.opsForValue().set(hashedNewToken, username, expiration, TimeUnit.MILLISECONDS);
+	        
+	            
+	            redisTemplate.delete(hashedToken);
+	  
+	         
+	            refreshData.put("refreshedToken", newToken);
+	            return refreshData;
+
+	        } catch (Exception e) {
+	            logger.error("Exception in refreshToken failed: {}", oldToken, e);
+	            throw new MyBusinessProException("Exception error in refreshToken", e.getMessage());
+	        }
+	    }
+	    
+
+//	    public Map<String,String> refreshToken(String oldToken) {
+//	    	Map<String,String> refreshData = new HashMap<String,String>();
+//	        try {
+//	            if (!isTokenValid(oldToken)) {
+//	                throw new MyBusinessProException("Invalid or expired token.");
+//	            }
+//
+//	            String username = extractUsername(oldToken);
+//
+//	            String hashedToken = hashToken(oldToken);
+//
+//	            redisTemplate.opsForValue().set(hashedToken, username, expiration, TimeUnit.MILLISECONDS);
+//	            refreshData.put("refreshedToken", oldToken);
+//	            return refreshData; 
+//
+//	        } catch (Exception e) {
+//	            logger.error("Exception refreshToken failed: {}", oldToken, e);
+//	            throw new MyBusinessProException("Exception error refreshToken ", e.getMessage());
+//	        }
+//	    }
+	    
+//	    option2 -> Sliding session without generating new JWT
+//	    public Map<String,String> refreshToken(String token) {
+//	    	Map<String,String> refreshData = new HashMap<String,String>();
+//	        try {
+//	        	validateJwtSignature(token); 
+//
+//	            String username = extractUsername(token);
+//	            String hashedToken = hashToken(token);
+//
+//	            Boolean exists = redisTemplate.hasKey(hashedToken);
+//	            if (Boolean.FALSE.equals(exists)) {
+//	                throw new MyBusinessProException("Token revoked or not found.");
+//	            }
+//
+//	            Long ttl = redisTemplate.getExpire(hashedToken, TimeUnit.MILLISECONDS);
+//	            if (ttl == null || ttl <= 0) {
+//	                throw new MyBusinessProException("Token expired.");
+//	            }
+//
+//	            redisTemplate.expire(
+//	                hashedToken,
+//	                expiration,
+//	                TimeUnit.MILLISECONDS
+//	            );
+//
+//	            logger.info("Token refreshed successfully for user {}", username);
+//	            refreshData.put("refreshedToken", token);
+//	            refreshData.put("ttl", String.valueOf(ttl));
+//	            return refreshData;
+//
+//	        } catch (Exception e) {
+//	            logger.error("refreshToken failed", e);
+//	            throw new MyBusinessProException("refreshToken ->", e.getMessage());
+//	        }
+//	    }
+//	    
+//	    public void validateJwtSignature(String token) {
+//	        try {
+//	            Jwts.parserBuilder()
+//	                .setSigningKey(getSigningKey()) 
+//	                .build()
+//	                .parseClaimsJws(token); 
+//	        } catch (JwtException e) {
+//	            throw new MyBusinessProException("Invalid token signature ->", e.getMessage());
+//	        }
+//	    }
+
+
+
 	    
 	    public String hashToken(String token) throws NoSuchAlgorithmException {
 	        MessageDigest digest = MessageDigest.getInstance("SHA-256");

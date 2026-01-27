@@ -40,15 +40,17 @@ public class AppFilter extends OncePerRequestFilter {
 		String header = request.getHeader("Authorization");
 		try {
 		if(header != null && header.startsWith("Bearer ")) {
+			
 			token = header.substring(7);
 			userName = jwtService.extractUsername(token);
 		}
 		
 		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = service.loadUserByUsername(userName);
-   
+            
         boolean isValidate = jwtService.validateToken(token,userDetails);
            if(isValidate){
+        	  
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             userDetails,

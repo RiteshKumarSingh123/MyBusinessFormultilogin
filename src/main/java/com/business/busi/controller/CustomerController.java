@@ -1,6 +1,5 @@
 package com.business.busi.controller;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.business.busi.configuration.JwtService;
@@ -74,14 +74,22 @@ public class CustomerController {
 	    Authentication authenticate	= authManager.authenticate(token);
 	    Map<String,String> storeToken = new HashMap<String,String>();
 	    if(authenticate.isAuthenticated()) {
-	    	String jwtToken = jwt.generateToken(customer.getName()) ;
-	    	storeToken.put("token", jwtToken);
+	    	 String accessToken  = jwt.generateAccessToken(customer.getName());
+	         String refreshToken = jwt.generateRefreshToken(customer.getName());
+	         storeToken.put("accessToken", accessToken);
+	         storeToken.put("refreshToken", refreshToken);
 	    	return new ResponseEntity<Map<String,String>>(storeToken,HttpStatus.OK);
 	    }
 	    storeToken.put("token", "invalid credentials");
 	    return new ResponseEntity<Map<String,String>>(storeToken,HttpStatus.BAD_REQUEST);
 	    
 	}
+	
+	@PostMapping("/refresh")
+    public ResponseEntity<Map<String,String>> refreshToken(@RequestParam String oldToken) {
+		Map<String,String> refreshedToken = jwt.refreshToken(oldToken);
+        return new ResponseEntity<Map<String,String>>(refreshedToken,HttpStatus.OK);  
+    }
 	
 	 @PostMapping("/logout")
 	    public Map<String, String> logout(@RequestHeader("Authorization") String authHeader){
