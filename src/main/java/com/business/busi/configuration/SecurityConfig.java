@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.business.busi.service.CustomerService;
 
@@ -30,6 +33,24 @@ public class SecurityConfig {
 	@Autowired
 	private BCryptPasswordEncoder pwdEncoder;
 	
+	
+	@Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:4200");  
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedHeader("*");  
+        config.setAllowCredentials(true);  
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
+    }
+	
 	@Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -44,14 +65,19 @@ public class SecurityConfig {
 	}
 	
 	
+	@SuppressWarnings("removal")
 	@Bean
 	public SecurityFilterChain security(HttpSecurity http)throws Exception {
 		
 		http
+		.cors() 
+        .and()
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests((req) -> {
 			req.requestMatchers("/bussiness/register", "/bussiness/login")
 			.permitAll()
+			.requestMatchers("/company/**")
+			.authenticated()
 			.anyRequest()
 			.authenticated();
 		})
