@@ -49,10 +49,10 @@ public class CompanyUserSevice implements CompanyService {
 	    saveResponse = repository.save(company);
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error saveCompanyInfo ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error saveCompanyInfo ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error saveCompanyInfo ", e.getMessage());
+		 throw new MyBusinessProException("Exception error saveCompanyInfo ","SYS_500", e.getMessage());
 		}
 		return saveResponse;
 	}
@@ -88,10 +88,10 @@ public class CompanyUserSevice implements CompanyService {
 		}));
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error getCompanyList ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error getCompanyList ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error getCompanyList ", e.getMessage());
+		 throw new MyBusinessProException("Exception error getCompanyList ","SYS_500", e.getMessage());
 		}
 	    return   companyFilter;
 	}
@@ -120,10 +120,10 @@ public class CompanyUserSevice implements CompanyService {
 		}));
 		}catch(DataAccessException  e) {
 	     logger.error("error handling DataAccessException :->", e.getMessage());	
-	     throw new MyBusinessProException("DataAccessException  error getCompanyDetailsList ", e.getMessage());
+	     throw new MyBusinessProException("DataAccessException  error getCompanyDetailsList ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error getCompanyDetailsList ", e.getMessage());
+		 throw new MyBusinessProException("Exception error getCompanyDetailsList ","SYS_500", e.getMessage());
 		}
 		return companyDetailsData;
 	}
@@ -136,10 +136,10 @@ public class CompanyUserSevice implements CompanyService {
 	    companyInfoById = dataById.stream().map(a->{a.setCompanyName(a.getCompanyName().toUpperCase());return a;}).findAny();
 		}catch(DataAccessException  e) {
 		  logger.error("error handling DataAccessException :->", e.getMessage());	
-		  throw new MyBusinessProException("DataAccessException  error getCompanyById ", e.getMessage());
+		  throw new MyBusinessProException("DataAccessException  error getCompanyById ","SYS_500", e.getMessage());
 	    }catch(Exception e) {
 		  logger.error("error handling Exception:->", e.getMessage());	
-		  throw new MyBusinessProException("Exception error getCompanyById ", e.getMessage());
+		  throw new MyBusinessProException("Exception error getCompanyById ","SYS_500", e.getMessage());
 		}
 		return companyInfoById;
 	}
@@ -152,10 +152,10 @@ public class CompanyUserSevice implements CompanyService {
 		res.put("status", "data deleted successfully");
 		}catch(DataAccessException  e) {
 			logger.error("error handling DataAccessException :->", e.getMessage());	
-			throw new MyBusinessProException("DataAccessException  error deleteCompanyById ", e.getMessage());
+			throw new MyBusinessProException("DataAccessException  error deleteCompanyById ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 			logger.error("error handling Exception:->", e.getMessage());	
-			throw new MyBusinessProException("Exception error deleteCompanyById ", e.getMessage());
+			throw new MyBusinessProException("Exception error deleteCompanyById ","SYS_500", e.getMessage());
 		}
 		return res;
 	}
@@ -179,10 +179,10 @@ public class CompanyUserSevice implements CompanyService {
 		res.put("status", "data updated successfully");
 		}catch(DataAccessException  e) {
 		  logger.error("error handling DataAccessException :->", e.getMessage());	
-		  throw new MyBusinessProException("DataAccessException  error updateCompany ", e.getMessage());
+		  throw new MyBusinessProException("DataAccessException  error updateCompany ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		  logger.error("error handling Exception:->", e.getMessage());	
-		  throw new MyBusinessProException("Exception error updateCompany ", e.getMessage());
+		  throw new MyBusinessProException("Exception error updateCompany ","SYS_500", e.getMessage());
 		}
 		return res;
 	}
@@ -201,10 +201,10 @@ public class CompanyUserSevice implements CompanyService {
 	}
 	}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error getDuplicateCompany ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error getDuplicateCompany ","SYS_500", e.getMessage());
 	}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error getDuplicateCompany ", e.getMessage());
+		 throw new MyBusinessProException("Exception error getDuplicateCompany ","SYS_500", e.getMessage());
 	}
 	return res; 
 
@@ -217,10 +217,10 @@ public class CompanyUserSevice implements CompanyService {
 	    saveResponse = workerRepo.save(worker);
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error saveWorkersData ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error saveWorkersData ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error saveWorkersData ", e.getMessage());
+		 throw new MyBusinessProException("Exception error saveWorkersData ","SYS_500", e.getMessage());
 		}
 		return saveResponse;
 	}
@@ -248,10 +248,10 @@ public class CompanyUserSevice implements CompanyService {
 				}));
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error getWorkersList ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error getWorkersList ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error getWorkersList ", e.getMessage());
+		 throw new MyBusinessProException("Exception error getWorkersList ","SYS_500", e.getMessage());
 		}
 		return workerFilterList;
 	}
@@ -268,10 +268,10 @@ public class CompanyUserSevice implements CompanyService {
 		}).findAny();
 		}catch(DataAccessException  e) {
 			 logger.error("error handling DataAccessException :->", e.getMessage());	
-			 throw new MyBusinessProException("DataAccessException  error getWorkersById ", e.getMessage());
+			 throw new MyBusinessProException("DataAccessException  error getWorkersById ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 			 logger.error("error handling Exception:->", e.getMessage());	
-			 throw new MyBusinessProException("Exception error getWorkersById ", e.getMessage());
+			 throw new MyBusinessProException("Exception error getWorkersById ","SYS_500", e.getMessage());
 		}
 		return workers;
 	}
@@ -284,10 +284,10 @@ public class CompanyUserSevice implements CompanyService {
 		res.put("status", "data deleted sucessfully");
 		}catch(DataAccessException  e) {
 			 logger.error("error handling DataAccessException :->", e.getMessage());	
-			 throw new MyBusinessProException("DataAccessException  error deleteWorkerById ", e.getMessage());
+			 throw new MyBusinessProException("DataAccessException  error deleteWorkerById ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 			 logger.error("error handling Exception:->", e.getMessage());	
-			 throw new MyBusinessProException("Exception error deleteWorkerById ", e.getMessage());
+			 throw new MyBusinessProException("Exception error deleteWorkerById ","SYS_500", e.getMessage());
 		}
 		return res;
 	}
@@ -309,10 +309,10 @@ public class CompanyUserSevice implements CompanyService {
 		res.put("status", "data updated sucessfully");
 		}catch(DataAccessException  e) {
 			 logger.error("error handling DataAccessException :->", e.getMessage());	
-			 throw new MyBusinessProException("DataAccessException  error updateWorkers ", e.getMessage());
+			 throw new MyBusinessProException("DataAccessException  error updateWorkers ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 			 logger.error("error handling Exception:->", e.getMessage());	
-			 throw new MyBusinessProException("Exception error updateWorkers ", e.getMessage());
+			 throw new MyBusinessProException("Exception error updateWorkers ","SYS_500", e.getMessage());
 		}
 		return res;
 	}
@@ -324,10 +324,10 @@ public class CompanyUserSevice implements CompanyService {
 	 saveCustomer = customerRepo.save(customers);
 	 }catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error saveCustomersData ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error saveCustomersData ","SYS_500", e.getMessage());
 	 }catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error saveCustomersData ", e.getMessage());
+		 throw new MyBusinessProException("Exception error saveCustomersData ","SYS_500", e.getMessage());
 	 }
 	 return saveCustomer;
 	}
@@ -352,10 +352,10 @@ public class CompanyUserSevice implements CompanyService {
 	    		}));
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error getCustomersList ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error getCustomersList ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error getCustomersList ", e.getMessage());
+		 throw new MyBusinessProException("Exception error getCustomersList ","SYS_500", e.getMessage());
 		}
 		return details;
 	}
@@ -369,10 +369,10 @@ public class CompanyUserSevice implements CompanyService {
 		 .map(a->{a.setCustomerName(a.getCustomerName().toUpperCase());return a;}).findAny();
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error getCustomerById ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error getCustomerById ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error getCustomerById ", e.getMessage());
+		 throw new MyBusinessProException("Exception error getCustomerById ","SYS_500", e.getMessage());
 		}
 		return customersDataById;
 	}
@@ -385,10 +385,10 @@ public class CompanyUserSevice implements CompanyService {
 		delRes.put("status", "data deleted sucessfully");
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error deleteCustomerById ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error deleteCustomerById ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error deleteCustomerById ", e.getMessage());
+		 throw new MyBusinessProException("Exception error deleteCustomerById ","SYS_500", e.getMessage());
 		}
 		return delRes;
 	}
@@ -409,10 +409,10 @@ public class CompanyUserSevice implements CompanyService {
 		updateRes.put("status", "data updated sucessfully");
 		}catch(DataAccessException  e) {
 		 logger.error("error handling DataAccessException :->", e.getMessage());	
-		 throw new MyBusinessProException("DataAccessException  error updateCustomers ", e.getMessage());
+		 throw new MyBusinessProException("DataAccessException  error updateCustomers ","SYS_500", e.getMessage());
 		}catch(Exception e) {
 		 logger.error("error handling Exception:->", e.getMessage());	
-		 throw new MyBusinessProException("Exception error updateCustomers ", e.getMessage());
+		 throw new MyBusinessProException("Exception error updateCustomers ","SYS_500", e.getMessage());
 		}
 		return updateRes;
 	}

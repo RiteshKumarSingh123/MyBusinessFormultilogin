@@ -69,7 +69,7 @@ public class JwtService {
 	        token = createToken(claims, username, expirationTime);
 	    	}catch(Exception e) {
 	    		logger.error("Exception generateToken failed: {}", username, e);
-	            throw new MyBusinessProException("Exception error generateToken ", e.getMessage());
+	            throw new MyBusinessProException("Exception error generateToken ","TOKEN_GENERATION_FAILED", e.getMessage());
 	    	}
 			return token;
 	    }
@@ -90,10 +90,10 @@ public class JwtService {
 		    redisTemplate.opsForValue().set(hashedToken, username, expirationTime, TimeUnit.MILLISECONDS);	
 	    	}catch(NoSuchAlgorithmException e) {
 	    		logger.error("NoSuchAlgorithmException createToken failed: {}", username, e);
-	            throw new MyBusinessProException("NoSuchAlgorithmException error createToken ", e.getMessage());
+	            throw new MyBusinessProException("NoSuchAlgorithmException error createToken ","TOKEN_GENERATION_FAILED", e.getMessage());
 	    	}catch(Exception e) {
 	    		logger.error("Exception createToken failed: {}", username, e);
-	            throw new MyBusinessProException("Exception error createToken ", e.getMessage());
+	            throw new MyBusinessProException("Exception error createToken ","TOKEN_GENERATION_FAILED", e.getMessage());
 	    	}
 	        return token;
 	    }
@@ -133,7 +133,7 @@ public class JwtService {
 
 	        } catch (Exception e) {
 	            logger.error("Exception in refreshToken failed: {}", oldToken, e);
-	            throw new MyBusinessProException("Exception error in refreshToken", e.getMessage());
+	            throw new MyBusinessProException("Exception error in refreshToken","REFRESH_TOKEN_INVALID", e.getMessage());
 	        }
 	    }
 	    
@@ -263,13 +263,13 @@ public class JwtService {
 
 	        } catch (JwtException  e) {
 	          logger.error("JwtException validateToken failed: {}", e.getMessage(), e);
-	          throw new MyBusinessProException("JwtException error validateToken ", e.getMessage());
+	          throw new MyBusinessProException("JwtException error validateToken ","TOKEN_INVALID", e.getMessage());
 	        } catch (NoSuchAlgorithmException e) {
 	          logger.error("NoSuchAlgorithmException validateToken failed: {}", e.getMessage(), e);
-		      throw new MyBusinessProException("NoSuchAlgorithmException error validateToken ", e.getMessage());
+		      throw new MyBusinessProException("NoSuchAlgorithmException error validateToken ","TOKEN_INVALID", e.getMessage());
 			}catch (Exception  e) {
 		      logger.error("Exception validateToken failed: {}", e.getMessage(), e);
-		      throw new MyBusinessProException("Exception error validateToken ", e.getMessage());
+		      throw new MyBusinessProException("Exception error validateToken ","TOKEN_INVALID", e.getMessage());
 		    }
 	    }
 	    
@@ -286,10 +286,10 @@ public class JwtService {
 	        isValid =  redisTemplate.hasKey(hashedToken);
 	    	}catch(NoSuchAlgorithmException e) {
 	    		logger.error("NoSuchAlgorithmException isTokenValid failed: {}", e.getMessage(), e);
-			    throw new MyBusinessProException("NoSuchAlgorithmException error isTokenValid ", e.getMessage());	
+			    throw new MyBusinessProException("NoSuchAlgorithmException error isTokenValid ","TOKEN_INVALID", e.getMessage());	
 	    	}catch(Exception e) {
 	    		logger.error("Exception isTokenValid failed: {}", e.getMessage(), e);
-			    throw new MyBusinessProException("Exception error isTokenValid ", e.getMessage());	
+			    throw new MyBusinessProException("Exception error isTokenValid ","TOKEN_INVALID", e.getMessage());	
 	    	}
 			return isValid;
 	    }
@@ -300,10 +300,10 @@ public class JwtService {
 	        redisTemplate.delete(hashedToken);
 	    	}catch(NoSuchAlgorithmException e) {
 	    		logger.error("NoSuchAlgorithmException deleteToken failed: {}", e.getMessage(), e);
-			    throw new MyBusinessProException("NoSuchAlgorithmException error deleteToken ", e.getMessage());
+			    throw new MyBusinessProException("NoSuchAlgorithmException error deleteToken ","TOKEN_INVALID", e.getMessage());
 	    	}catch(Exception e) {
 	    		logger.error("Exception deleteToken failed: {}", e.getMessage(), e);
-			    throw new MyBusinessProException("Exception error deleteToken ", e.getMessage());
+			    throw new MyBusinessProException("Exception error deleteToken ","TOKEN_INVALID", e.getMessage());
 	    	}
 	    }
 
