@@ -32,27 +32,27 @@ public class CompanyController {
 	}
 	
 	@GetMapping("getCompanyList")
-	public CompanyDetails getCompanyList(@RequestParam(defaultValue = "1") int page,
-	        @RequestParam(defaultValue = "10") int size){
+	public CompanyDetails getCompanyList(@RequestParam( name = "page", defaultValue = "1") int page,
+	        @RequestParam( name = "size", defaultValue = "10") int size){
 		CompanyDetails listOfCompanies = service.getCompanyList(page-1, size);
 		return listOfCompanies;
 	}
 	
 	@GetMapping("getCompanyDetailsList")
-	public CompanyDetails getCompanyDetailsList(@RequestParam(defaultValue = "1") int page,
-	        @RequestParam(defaultValue = "10") int size){
+	public CompanyDetails getCompanyDetailsList(@RequestParam( name = "page", defaultValue = "1") int page,
+	        @RequestParam( name = "size", defaultValue = "10") int size){
 		CompanyDetails listOfCompanies = service.getCompanyDetailsList(page-1, size);
 		return listOfCompanies;
 	}
 	
 	@GetMapping("getCompanyById")
-	public Optional<Company> getCompanyById(@RequestParam long companyId){
+	public Optional<Company> getCompanyById(@RequestParam("companyId") long companyId){
 		Optional<Company> companyData = service.getCompanyById(companyId);
 		return companyData;
 	}
 	
 	@GetMapping("deleteCompanyById")
-	public Map<String,String> deleteCompanyById(@RequestParam long companyId){
+	public Map<String,String> deleteCompanyById(@RequestParam("companyId") long companyId){
 		Map<String,String> delRes = service.deleteCompanyById(companyId);
 		return delRes;
 	}
@@ -64,7 +64,7 @@ public class CompanyController {
 	}
 	
 	@GetMapping("getDuplicateCompany")
-	public Map<String,String> getDuplicateCompany(@RequestParam long companyId){
+	public Map<String,String> getDuplicateCompany(@RequestParam("companyId") long companyId){
 		Map<String,String> count = service.getDuplicateCompany(companyId);
 		return count;
 	}
@@ -76,20 +76,20 @@ public class CompanyController {
 	}
 	
 	@GetMapping("getWorkersList")
-	public CompanyDetails getWorkersList(@RequestParam(defaultValue = "1") int page,
-	        @RequestParam(defaultValue = "10") int size){
+	public CompanyDetails getWorkersList(@RequestParam( name = "page", defaultValue = "1") int page,
+	        @RequestParam( name = "size", defaultValue = "10") int size){
 		CompanyDetails workersList = service.getWorkersList(page-1, size);
 		return workersList;
 	}
 	
 	@GetMapping("getWorkersById")
-	public Optional<Workers> getWorkersById(@RequestParam long workerId){
+	public Optional<Workers> getWorkersById(@RequestParam("workerId") long workerId){
 		Optional<Workers> workersListById = service.getWorkersById(workerId);
 		return workersListById;
 	}
 	
 	@GetMapping("deleteWorkerById")
-	public Map<String,String> deleteWorkerById(@RequestParam long workerId){
+	public Map<String,String> deleteWorkerById(@RequestParam("workerId") long workerId){
 		Map<String,String> deletedRes = service.deleteWorkerById(workerId);
 		return deletedRes;
 	}
@@ -107,20 +107,20 @@ public class CompanyController {
 	}
 	
 	@GetMapping("getCustomersList")
-	public CompanyDetails getCustomersList(@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int size){
+	public CompanyDetails getCustomersList(@RequestParam( name = "page", defaultValue = "1") int page,
+			@RequestParam( name = "size", defaultValue = "10") int size){
 		CompanyDetails customersList = service.getCustomersList(page-1, size);
 		return customersList;
 	}
 	
 	@GetMapping("getCustomerById")
-	public  Optional<Customers> getCustomerById(@RequestParam long customerId){
+	public  Optional<Customers> getCustomerById(@RequestParam("customerId") long customerId){
 		 Optional<Customers> customersById = service.getCustomerById(customerId);
 		return customersById;
 	}
 	
 	@GetMapping("deleteCustomerById")
-	public Map<String,String> deleteCustomerById(@RequestParam long customerId){
+	public Map<String,String> deleteCustomerById(@RequestParam("customerId") long customerId){
 		Map<String,String> deletedRes = service.deleteCustomerById(customerId);
 		return deletedRes;
 	}
